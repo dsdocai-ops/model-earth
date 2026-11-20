@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ARCMUN 2027</title>
+  <meta name="description" content="ARCMUN 2027 is a one-day Model United Nations conference in Folsom, California for high school and middle school delegates, held on March 21, 2027.">
+  <meta name="theme-color" content="#0f2347">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%230f2347' stroke='%23ffffff' stroke-width='2'/><path d='M3 16h26' stroke='%23b3202a' stroke-width='2'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital@0;1&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/textures/earth_day_4k.jpg" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/formal.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.min.js",
+        "three/addons/": "./vendor/three/addons/"
+      }
+    }
+  </script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body data-conference="2027-03-21">
+  <div class="stage" aria-hidden="true">
+    <canvas id="globe"></canvas>
+    <div class="vignette"></div>
+  </div>
+
+  <div id="loader" class="loader" role="status">
+    <span class="loader-label">ARCMUN 2027</span>
+    <span class="loader-track"><span id="loader-bar" class="loader-bar"></span></span>
+  </div>
+
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="ARCMUN home">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M2 12h20M12 2c3 3.2 3 16.8 0 20M12 2c-3 3.2-3 16.8 0 20M4.5 6.5h15M4.5 17.5h15" fill="none" stroke="currentColor" stroke-width="0.9" opacity=".6"/></svg>
+      <span>ARCMUN <span class="brand-year">2027</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#committees">Committees</a>
+      <a href="#schedule">Programme</a>
+      <a href="#secretariat">Secretariat</a>
+      <a href="#register" class="nav-cta">Registration</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">ARCMUN 2027 <span aria-hidden="true">·</span> Folsom, California <span aria-hidden="true">·</span> March 21</p>
+        <h1 id="hero-title">The world,<br><em>in session.</em></h1>
+        <p class="lede">A one-day Model United Nations conference for high school and middle school delegates. Represent a member state, negotiate in committee, and draft resolutions on the questions facing the international community.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#register">Registration information</a>
+          <button class="btn btn-ghost" type="button" data-explore>Explore the globe</button>
+        </div>
+      </div>
+
+      <aside class="hud" aria-label="Folsom right now">
+        <p class="hud-title">Folsom, California</p>
+        <dl>
+          <div><dt>Local time</dt><dd id="hud-time">—</dd></div>
+          <div><dt>Conditions</dt><dd id="hud-sky">—</dd></div>
+          <div><dt>Opening day in</dt><dd id="hud-countdown">—</dd></div>
+        </dl>
+      </aside>
+
+      <button id="explore-exit" class="exit" type="button">
+        <svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Return to site
+      </button>
+      <p class="explore-hint">Drag to rotate · scroll or pinch to zoom · Folsom is marked in red</p>
+
+      <a class="scroll-cue" href="#about" aria-label="Continue to About"><span></span></a>
+    </section>
+
+    <section id="about" class="section paper">
+      <div class="section-head">
+        <p class="eyebrow">About the conference</p>
+        <h2>Diplomacy, practised in <em>a single day.</em></h2>
+        <p class="section-lede">Model United Nations places students in the role of national delegates. Each delegate researches the policy of an assigned member state and works with others in committee to draft, debate and adopt resolutions. ARCMUN 2027 brings that experience to Folsom for one full day of committee sessions.</p>
+      </div>
+
+      <div class="stats">
+        <div><strong>One day</strong><span>March 21, 2027</span></div>
+        <div><strong>Two divisions</strong><span>High school and middle school</span></div>
+        <div><strong>Folsom</strong><span>California · venue to be announced</span></div>
+      </div>
+
+      <h3 class="subhead">The delegate’s path</h3>
+      <ol class="steps">
+        <li>
+          <span class="step-num" aria-hidden="true">I</span>
+          <h4>Country assignment</h4>
+          <p>Schools register their delegations and each delegate is assigned a member state and committee.</p>
+        </li>
+        <li>
+          <span class="step-num" aria-hidden="true">II</span>
+          <h4>Research</h4>
+          <p>Delegates prepare their country’s position on the committee’s agenda in advance.</p>
+        </li>
+        <li>
+          <span class="step-num" aria-hidden="true">III</span>
+          <h4>Committee debate</h4>
+          <p>Formal speeches, moderated and unmoderated caucuses, and negotiation between blocs.</p>
+        </li>
+        <li>
+          <span class="step-num" aria-hidden="true">IV</span>
+          <h4>Resolution</h4>
+          <p>Draft resolutions are amended, debated and brought to a vote by the committee.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="committees" class="section paper">
+      <div class="section-head">
+        <p class="eyebrow">Committees</p>
+        <h2>Committee assignments <em>forthcoming.</em></h2>
+        <p class="section-lede">The committees and agenda topics for each division will be published ahead of registration.</p>
+      </div>
+      <div class="divisions">
+        <article class="division">
+          <h3>High School Division</h3>
+          <ul class="slots">
+            <li class="slot"><span class="slot-q" aria-hidden="true">—</span><span><strong>Committee to be announced</strong>Agenda topic to be announced</span></li>
+            <li class="slot"><span class="slot-q" aria-hidden="true">—</span><span><strong>Committee to be announced</strong>Agenda topic to be announced</span></li>
+            <li class="slot"><span class="slot-q" aria-hidden="true">—</span><span><strong>Committee to be announced</strong>Agenda topic to be announced</span></li>
+          </ul>
+        </article>
+        <article class="division">
+          <h3>Middle School Division</h3>
+          <ul class="slots">
+            <li class="slot"><span class="slot-q" aria-hidden="true">—</span><span><strong>Committee to be announced</strong>Agenda topic to be announced</span></li>
+            <li class="slot"><span class="slot-q" aria-hidden="true">—</span><span><strong>Committee to be announced</strong>Agenda topic to be announced</span></li>
+            <li class="slot"><span class="slot-q" aria-hidden="true">—</span><span><strong>Committee to be announced</strong>Agenda topic to be announced</span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="schedule" class="section blue">
+      <div class="section-head">
+        <p class="eyebrow">Programme</p>
+        <h2>Order of the day</h2>
+        <p class="section-lede">March 21, 2027. Session times will be confirmed with the final programme.</p>
+      </div>
+      <ol class="timeline">
+        <li><span class="time">TBA</span><div><strong>Registration and check-in</strong><p>Delegates collect credentials and placards.</p></div></li>
+        <li><span class="time">TBA</span><div><strong>Opening ceremony</strong><p>Remarks from the Secretariat and formal opening of the conference.</p></div></li>
+        <li><span class="time">TBA</span><div><strong>First committee session</strong><p>Opening speeches, caucusing and working papers.</p></div></li>
+        <li><span class="time">TBA</span><div><strong>Luncheon recess</strong><p>The committees stand in recess.</p></div></li>
+        <li><span class="time">TBA</span><div><strong>Second committee session</strong><p>Draft resolutions, amendments and voting procedure.</p></div></li>
+        <li><span class="time">TBA</span><div><strong>Closing ceremony and awards</strong><p>Recognition of outstanding delegates and close of the conference.</p></div></li>
+      </ol>
+    </section>
+
+    <section id="secretariat" class="section paper">
+      <div class="section-head">
+        <p class="eyebrow">Secretariat</p>
+        <h2>The Secretariat</h2>
+        <p class="section-lede">Members of the ARCMUN 2027 Secretariat will be announced.</p>
+      </div>
+      <ul class="people">
+        <li class="person"><span class="avatar" aria-hidden="true"></span><strong class="name">To be announced</strong><span class="role">Secretary-General</span></li>
+        <li class="person"><span class="avatar" aria-hidden="true"></span><strong class="name">To be announced</strong><span class="role">Deputy Secretary-General</span></li>
+        <li class="person"><span class="avatar" aria-hidden="true"></span><strong class="name">To be announced</strong><span class="role">Director-General</span></li>
+        <li class="person"><span class="avatar" aria-hidden="true"></span><strong class="name">To be announced</strong><span class="role">Chief of Staff</span></li>
+        <li class="person"><span class="avatar" aria-hidden="true"></span><strong class="name">To be announced</strong><span class="role">Under-Secretary-General, Committees</span></li>
+        <li class="person"><span class="avatar" aria-hidden="true"></span><strong class="name">To be announced</strong><span class="role">Under-Secretary-General, Logistics</span></li>
+      </ul>
+    </section>
+
+    <section id="register" class="section paper">
+      <div class="register">
+        <div class="section-head">
+          <p class="eyebrow">Registration</p>
+          <h2>Registration will open <em>soon.</em></h2>
+          <p class="section-lede">Fees, deadlines and the conference venue will be published on this page when registration opens.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Date</dt><dd>March 21, 2027</dd></div>
+          <div><dt>Location</dt><dd>Folsom, California<small>Venue to be announced</small></dd></div>
+          <div><dt>Delegates</dt><dd>High school and middle school</dd></div>
+          <div><dt>Fees</dt><dd>To be announced</dd></div>
+          <div><dt>Contact</dt><dd>To be announced</dd></div>
+        </dl>
+        <p class="register-cta"><span class="btn btn-primary is-disabled" aria-disabled="true">Registration opens soon</span></p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>
+        <p class="footer-mark">ARCMUN 2027</p>
+        <p>Model United Nations · Folsom, California · March 21, 2027</p>
+        <p class="credits">Globe imagery by <a href="https://www.solarsystemscope.com/textures/" rel="noopener">Solar System Scope</a> (CC BY 4.0), based on NASA data. Rendered with <a href="https://threejs.org" rel="noopener">three.js</a>.</p>
+      </div>
+      <a class="preview-switch" href="index.html">Preview the playful version →</a>
+    </footer>
+  </main>
+</body>
+</html>

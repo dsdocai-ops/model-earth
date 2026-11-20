@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Model Earth</title>
-  <meta name="description" content="A real-time, physically based model of Earth — lit by the Sun's true position right now, wrapped in a ray-marched atmosphere.">
+  <title>ARCMUN 2027</title>
+  <meta name="description" content="ARCMUN is a one-day Model United Nations conference in Folsom, California for high school and middle school delegates. March 21, 2027.">
   <meta name="theme-color" content="#0b1f4d">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><radialGradient id='g' cx='35%' cy='35%'><stop offset='0' stop-color='%236fb6ff'/><stop offset='1' stop-color='%230a2a55'/></radialGradient></defs><circle cx='16' cy='16' r='14' fill='url(%23g)'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%231f5bff' stroke='%230b1f4d' stroke-width='3'/><circle cx='22' cy='11' r='4' fill='%23e8323c'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -22,150 +22,187 @@
   </script>
   <script type="module" src="js/main.js"></script>
 </head>
-<body>
+<body data-conference="2027-03-21">
   <div class="stage" aria-hidden="true">
     <canvas id="globe"></canvas>
     <div class="vignette"></div>
   </div>
 
   <div id="loader" class="loader" role="status">
-    <span class="loader-label">Loading planet…</span>
+    <span class="loader-label">Calling the world to order…</span>
     <span class="loader-track"><span id="loader-bar" class="loader-bar"></span></span>
   </div>
 
   <header class="nav">
-    <a class="brand" href="#top" aria-label="Model Earth home">
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2 12h20M12 2c3 3.2 3 16.8 0 20M12 2c-3 3.2-3 16.8 0 20" fill="none" stroke="currentColor" stroke-width="1.1" opacity=".55"/></svg>
-      <span>Model Earth</span>
+    <a class="brand" href="#top" aria-label="ARCMUN home">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2 12h20M12 2c3 3.2 3 16.8 0 20M12 2c-3 3.2-3 16.8 0 20" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".6"/></svg>
+      <span>ARCMUN</span>
     </a>
     <nav class="nav-links" aria-label="Sections">
-      <a href="#layers">Layers</a>
-      <a href="#light">Light</a>
-      <a href="#credits">Data</a>
+      <a href="#about">About</a>
+      <a href="#committees">Committees</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#secretariat">Secretariat</a>
+      <a href="#register" class="nav-cta">Register</a>
     </nav>
   </header>
 
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow bubble"><span class="live-dot" aria-hidden="true"></span>Live! Rendered in your browser</p>
-        <h1 id="hero-title">Earth, exactly <em><span>as it is</span> <span>right now.</span></em></h1>
-        <p class="lede">A physically based model of our planet, lit by the Sun’s true position this second. Real satellite imagery, real city lights, and an atmosphere that scatters light the way air does.</p>
+        <p class="eyebrow bubble"><span class="live-dot" aria-hidden="true"></span>Folsom, CA · March 21, 2027</p>
+        <h1 id="hero-title">The world needs <em><span>a few good</span> <span>delegates.</span></em></h1>
+        <p class="lede">ARCMUN is a one-day Model United Nations conference in Folsom for high school and middle school students. Represent a country, argue its case in committee, and pass a resolution.</p>
         <div class="cta">
-          <button id="explore" class="btn btn-primary" type="button">
-            <span>Explore the globe</span>
-            <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <a class="btn btn-ghost" href="#layers">How it’s made</a>
+          <a class="btn btn-primary" href="#register">
+            <span>Registration info</span>
+            <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <button class="btn btn-ghost" type="button" data-explore>Spin the globe</button>
         </div>
       </div>
 
-      <div class="sticker" aria-hidden="true"><span>100%<br>real<br>data</span></div>
+      <div class="sticker" aria-hidden="true"><span>HS + MS<br>welcome!</span></div>
 
-      <aside class="hud" aria-label="Live telemetry">
+      <aside class="hud" aria-label="Folsom right now">
+        <p class="hud-title">Meanwhile, in Folsom…</p>
         <dl>
-          <div><dt>Time</dt><dd id="hud-utc">--:--:-- UTC</dd></div>
-          <div><dt>Date</dt><dd id="hud-local">—</dd></div>
-          <div><dt>Subsolar point</dt><dd id="hud-subsolar">—</dd></div>
-          <div><dt>Viewing</dt><dd><span id="hud-view">—</span> <span class="tag" id="hud-day">—</span></dd></div>
+          <div><dt>Local time</dt><dd id="hud-time">—</dd></div>
+          <div><dt>Sky</dt><dd><span class="tag" id="hud-sky">—</span></dd></div>
+          <div><dt>Gavel drops in</dt><dd id="hud-countdown">—</dd></div>
         </dl>
       </aside>
 
-      <div class="console" role="group" aria-label="Globe controls">
-        <div class="console-row">
-          <label for="time-offset" class="console-label">Time <output id="time-offset-label">Live</output></label>
-          <div class="console-time">
-            <input id="time-offset" type="range" min="-12" max="12" step="0.25" value="0" aria-describedby="time-hint">
-            <button id="time-live" class="chip" type="button" title="Return to the present">Now</button>
-            <button id="timelapse" class="chip" type="button" aria-pressed="false">
-              <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M4 3v10l9-5z" fill="currentColor"/></svg><span>Timelapse</span>
-            </button>
-          </div>
-          <span id="time-hint" class="sr-only">Shift the simulated time up to twelve hours either way to move the day–night line.</span>
-        </div>
-        <div class="console-row layers" role="group" aria-label="Layers">
-          <button class="chip" type="button" data-layer="clouds" aria-pressed="true">Clouds</button>
-          <button class="chip" type="button" data-layer="lights" aria-pressed="true">City lights</button>
-          <button class="chip" type="button" data-layer="atmosphere" aria-pressed="true">Atmosphere</button>
-        </div>
-      </div>
-
       <button id="explore-exit" class="exit" type="button">
-        <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        Close explorer
+        <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Back to the site
       </button>
-      <p class="explore-hint">Drag to orbit · scroll or pinch to zoom · Esc to exit</p>
+      <p class="explore-hint">Drag to spin · scroll or pinch to zoom · red dot = Folsom</p>
 
-      <a class="scroll-cue" href="#layers" aria-label="Scroll to learn how it’s made"><span></span></a>
+      <a class="scroll-cue" href="#about" aria-label="Scroll to learn about ARCMUN"><span></span></a>
     </section>
 
-    <section id="layers" class="section">
+    <section id="about" class="section paper">
       <div class="section-head">
-        <p class="eyebrow">The layers</p>
-        <h2>A planet, not a <mark>picture.</mark></h2>
-        <p class="section-lede">Nothing on the globe is painted. Every pixel is shaded at sixty frames a second from five layers of satellite-derived data, composited the way light composes them in orbit.</p>
+        <p class="eyebrow">What is ARCMUN?</p>
+        <h2>One day. One room. <mark>The whole planet.</mark></h2>
+        <p class="section-lede">Model UN puts students in the seats of real diplomats. Each delegate represents a country, researches where it stands, and negotiates with everyone else to write a resolution that can win a vote. At ARCMUN, you get the full experience in a single day.</p>
       </div>
 
       <div class="stats">
-        <div><strong>8K</strong><span>surface and night-light imagery on capable displays</span></div>
-        <div><strong>±0.01°</strong><span>solar position from an astronomical ephemeris</span></div>
-        <div><strong>112</strong><span>atmosphere samples ray-marched for every pixel</span></div>
+        <div><strong>1</strong><span>day of debate on March 21, 2027</span></div>
+        <div><strong>HS+MS</strong><span>high school and middle school delegates</span></div>
+        <div><strong>Folsom</strong><span>California, venue to be announced</span></div>
       </div>
 
-      <ol class="cards">
-        <li class="card">
-          <span class="card-swatch swatch-day" aria-hidden="true"></span>
-          <h3>Surface</h3>
-          <p>Cloud-free true-colour mosaic of land and sea, derived from NASA’s Blue Marble programme. Oceans are deepened slightly where satellite haze flattened them.</p>
+      <h3 class="subhead">How it works</h3>
+      <ol class="steps">
+        <li>
+          <span class="step-num" aria-hidden="true">1</span>
+          <h4>Get your country</h4>
+          <p>Your school registers and you're assigned a country and a committee.</p>
         </li>
-        <li class="card">
-          <span class="card-swatch swatch-relief" aria-hidden="true"></span>
-          <h3>Relief &amp; water</h3>
-          <p>A normal map computed from global elevation shades mountains at low sun. A separate water mask gives oceans a glossy surface that throws a real sun glint.</p>
+        <li>
+          <span class="step-num" aria-hidden="true">2</span>
+          <h4>Do your homework</h4>
+          <p>Research your country's position on the committee topic before the conference.</p>
         </li>
-        <li class="card">
-          <span class="card-swatch swatch-clouds" aria-hidden="true"></span>
-          <h3>Clouds</h3>
-          <p>A global cloud composite floats on its own shell twenty-nine kilometres up, drifting over the ground and casting offset shadows onto it.</p>
+        <li>
+          <span class="step-num" aria-hidden="true">3</span>
+          <h4>Debate and deal</h4>
+          <p>Give speeches, caucus with allies, and win over the delegates who disagree.</p>
         </li>
-        <li class="card">
-          <span class="card-swatch swatch-night" aria-hidden="true"></span>
-          <h3>City lights</h3>
-          <p>NASA’s night-time imagery fades in only after civil twilight, dimmed where clouds sit overhead, exactly where the Sun has set right now.</p>
+        <li>
+          <span class="step-num" aria-hidden="true">4</span>
+          <h4>Pass a resolution</h4>
+          <p>Draft a resolution as a bloc, defend it, and bring it to a vote.</p>
         </li>
       </ol>
     </section>
 
-    <section id="light" class="section section-split">
+    <section id="committees" class="section paper">
       <div class="section-head">
-        <p class="eyebrow">The light</p>
-        <h2>Light, the way <mark>air</mark> bends it.</h2>
+        <p class="eyebrow">Committees</p>
+        <h2>The lineup is <mark>top secret.</mark> For now.</h2>
+        <p class="section-lede">Committees and topics will be announced soon. Each division gets its own committees, matched to its experience level.</p>
       </div>
-      <div class="prose">
-        <p>The thin blue limb isn’t a glow effect. For each pixel the renderer traces a ray through a model atmosphere, sampling air density sixteen times and, at each step, marching another six samples toward the Sun.</p>
-        <dl class="defs">
-          <div>
-            <dt>Rayleigh scattering</dt>
-            <dd>Nitrogen and oxygen molecules scatter blue light about five times more than red, which tints the day-side haze and the edge of the planet.</dd>
-          </div>
-          <div>
-            <dt>Mie scattering</dt>
-            <dd>Larger aerosols scatter forward, so the rim flares bright when you orbit around to put the Sun behind the Earth.</dd>
-          </div>
-          <div>
-            <dt>The terminator</dt>
-            <dd>Sunlight grazing the day–night line crosses up to forty times more air. Blue is stripped out first, so the edge of day burns gold, then red.</dd>
-          </div>
-        </dl>
+      <div class="divisions">
+        <article class="division">
+          <h3>High School Division</h3>
+          <ul class="slots">
+            <li class="slot"><span class="slot-q" aria-hidden="true">?</span><span><strong>Committee to be announced</strong>Topic coming soon</span></li>
+            <li class="slot"><span class="slot-q" aria-hidden="true">?</span><span><strong>Committee to be announced</strong>Topic coming soon</span></li>
+            <li class="slot"><span class="slot-q" aria-hidden="true">?</span><span><strong>Committee to be announced</strong>Topic coming soon</span></li>
+          </ul>
+        </article>
+        <article class="division">
+          <h3>Middle School Division</h3>
+          <ul class="slots">
+            <li class="slot"><span class="slot-q" aria-hidden="true">?</span><span><strong>Committee to be announced</strong>Topic coming soon</span></li>
+            <li class="slot"><span class="slot-q" aria-hidden="true">?</span><span><strong>Committee to be announced</strong>Topic coming soon</span></li>
+            <li class="slot"><span class="slot-q" aria-hidden="true">?</span><span><strong>Committee to be announced</strong>Topic coming soon</span></li>
+          </ul>
+        </article>
       </div>
     </section>
 
-    <footer id="credits" class="footer">
-      <div>
-        <p class="eyebrow">Data &amp; credits</p>
-        <p>Surface, night-light and cloud textures by <a href="https://www.solarsystemscope.com/textures/" rel="noopener">Solar System Scope</a> (CC BY 4.0), based on NASA imagery. Relief and water data adapted from the <a href="https://github.com/mrdoob/three.js" rel="noopener">three.js</a> planet textures. Rendered with three.js (MIT).</p>
+    <section id="schedule" class="section blue">
+      <div class="section-head">
+        <p class="eyebrow">Schedule</p>
+        <h2>March 21, <mark>start to gavel.</mark></h2>
+        <p class="section-lede">Exact times are coming soon. Here's the shape of the day.</p>
       </div>
-      <p class="footer-mark">Model Earth</p>
+      <ol class="timeline">
+        <li><span class="time">TBA</span><div><strong>Check-in</strong><p>Pick up your placard and find your committee room.</p></div></li>
+        <li><span class="time">TBA</span><div><strong>Opening ceremony</strong><p>The Secretariat welcomes every delegate and opens the conference.</p></div></li>
+        <li><span class="time">TBA</span><div><strong>Committee session I</strong><p>Speeches, moderated caucuses and the first draft resolutions.</p></div></li>
+        <li><span class="time">TBA</span><div><strong>Lunch</strong><p>Refuel. Unofficially, the best negotiating happens here.</p></div></li>
+        <li><span class="time">TBA</span><div><strong>Committee session II</strong><p>Amendments, final debate and voting procedure.</p></div></li>
+        <li><span class="time">TBA</span><div><strong>Closing ceremony &amp; awards</strong><p>Recognising the delegates who stood out.</p></div></li>
+      </ol>
+    </section>
+
+    <section id="secretariat" class="section paper">
+      <div class="section-head">
+        <p class="eyebrow">Secretariat</p>
+        <h2>The people <mark>running the world.</mark></h2>
+        <p class="section-lede">The student team behind ARCMUN. Names are coming soon.</p>
+      </div>
+      <ul class="people">
+        <li class="person"><span class="avatar" aria-hidden="true">?</span><strong class="name">To be announced</strong><span class="role">Secretary-General</span></li>
+        <li class="person"><span class="avatar" aria-hidden="true">?</span><strong class="name">To be announced</strong><span class="role">Deputy Secretary-General</span></li>
+        <li class="person"><span class="avatar" aria-hidden="true">?</span><strong class="name">To be announced</strong><span class="role">Director-General</span></li>
+        <li class="person"><span class="avatar" aria-hidden="true">?</span><strong class="name">To be announced</strong><span class="role">Chief of Staff</span></li>
+        <li class="person"><span class="avatar" aria-hidden="true">?</span><strong class="name">To be announced</strong><span class="role">Under-Secretary-General, Committees</span></li>
+        <li class="person"><span class="avatar" aria-hidden="true">?</span><strong class="name">To be announced</strong><span class="role">Under-Secretary-General, Logistics</span></li>
+      </ul>
+    </section>
+
+    <section id="register" class="section paper">
+      <div class="register">
+        <div class="section-head">
+          <p class="eyebrow">Register</p>
+          <h2>Save the date. <mark>Seats are coming.</mark></h2>
+          <p class="section-lede">Registration hasn't opened yet. Details on fees, deadlines and the venue will be posted here first.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>When</dt><dd>March 21, 2027</dd></div>
+          <div><dt>Where</dt><dd>Folsom, California<small>Venue to be announced</small></dd></div>
+          <div><dt>Who</dt><dd>High school and middle school delegates</dd></div>
+          <div><dt>Fees</dt><dd>To be announced</dd></div>
+          <div><dt>Contact</dt><dd>To be announced</dd></div>
+        </dl>
+        <p class="register-cta"><span class="btn btn-primary is-disabled" aria-disabled="true">Registration opens soon</span></p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>
+        <p class="footer-mark">ARCMUN</p>
+        <p>Model United Nations · Folsom, California · March 21, 2027</p>
+        <p class="credits">Globe imagery by <a href="https://www.solarsystemscope.com/textures/" rel="noopener">Solar System Scope</a> (CC BY 4.0), based on NASA data. Rendered with <a href="https://threejs.org" rel="noopener">three.js</a>.</p>
+      </div>
+      <a class="preview-switch" href="formal.html">Preview the formal version →</a>
     </footer>
   </main>
 </body>

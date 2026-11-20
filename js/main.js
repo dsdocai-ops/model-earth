@@ -223,12 +223,31 @@ function updateSun(date) {
   return { lat, lon };
 }
 
-// Opening view: afternoon side of the planet, terminator on the right with cities switching on.
+// ---------------------------------------------------------------- Folsom marker
+const FOLSOM = { lat: 38.678 * DEG, lon: -121.1761 * DEG };
+const folsomDir = latLonToVector(FOLSOM.lat, FOLSOM.lon, new THREE.Vector3()).normalize();
+
+const marker = new THREE.Group();
+const markerColor = new THREE.Color(6, 0.5, 0.6); // HDR red so it blooms slightly
+const pin = new THREE.Mesh(
+  new THREE.CircleGeometry(0.011, 32),
+  new THREE.MeshBasicMaterial({ color: markerColor, transparent: true, depthWrite: false })
+);
+const ringMat = new THREE.MeshBasicMaterial({ color: markerColor, transparent: true, depthWrite: false, side: THREE.DoubleSide });
+const ring = new THREE.Mesh(new THREE.RingGeometry(0.016, 0.02, 48), ringMat);
+marker.add(pin, ring);
+marker.position.copy(folsomDir).multiplyScalar(1.0075);
+marker.lookAt(folsomDir.clone().multiplyScalar(2));
+marker.renderOrder = 3;
+pin.renderOrder = ring.renderOrder = 3;
+scene.add(marker);
+
+// Opening view: frame Folsom, nudged toward the sunlit side so the hero is never a dark disc.
 {
-  const { lon } = updateSun(simDate());
-  const viewLat = 18 * DEG;
-  const viewLon = lon + 58 * DEG;
-  latLonToVector(viewLat, viewLon, camera.position).multiplyScalar(4.5);
+  const { lon: sunLon } = updateSun(simDate());
+  let dl = Math.atan2(Math.sin(sunLon - FOLSOM.lon), Math.cos(sunLon - FOLSOM.lon));
+  dl = Math.max(-40 * DEG, Math.min(40 * DEG, dl));
+  latLonToVector(24 * DEG, FOLSOM.lon + dl, camera.position).multiplyScalar(4.5);
   camera.lookAt(0, 0, 0);
 }
 
@@ -271,67 +290,49 @@ new ResizeObserver(resize).observe(stage);
 resize();
 
 // ---------------------------------------------------------------- HUD
+const $ = (id) => document.getElementById(id);
 const hud = {
-  utc: document.getElementById('hud-utc'),
-  local: document.getElementById('hud-local'),
-  sub: document.getElementById('hud-subsolar'),
-  view: document.getElementById('hud-view'),
-  day: document.getElementById('hud-day'),
-  offset: document.getElementById('time-offset-label'),
+  time: $('hud-time'),
+  sky: $('hud-sky'),
+  countdown: $('hud-countdown'),
 };
 
-const pad = (n) => String(n).padStart(2, '0');
+// Conference day, as a Pacific-time calendar date (e.g. "2027-03-21").
+const conferenceDay = document.body.dataset.conference;
+const folsomClock = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit', second: '2-digit',
+});
+
+function pacificMidnightUTC(isoDay) {
+  // Midnight in Folsom: 07:00 UTC during daylight saving (March onward), 08:00 otherwise.
+  const [y, m, d] = isoDay.split('-').map(Number);
+  for (const h of [7, 8]) {
+    const t = Date.UTC(y, m - 1, d, h);
+    const hh = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hour: 'numeric', hourCycle: 'h23' }).format(t);
+    if (Number(hh) === 0) return t;
+  }
+  return Date.UTC(y, m - 1, d, 8);
+}
+const conferenceStart = conferenceDay ? pacificMidnightUTC(conferenceDay) : null;
+
 let lastHud = 0;
-
-function updateHud(date, sub, now) {
-  if (now - lastHud < 200) return;
+function updateHud(now) {
+  if (now - lastHud < 250) return;
   lastHud = now;
-  hud.utc.textContent = `${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}:${pad(date.getUTCSeconds())} UTC`;
-  hud.local.textContent = date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
-  hud.sub.textContent = formatLatLon(sub.lat, sub.lon);
-  const v = vectorToLatLon(camera.position);
-  hud.view.textContent = formatLatLon(v.lat, v.lon);
-  const mu = camera.position.clone().normalize().dot(sunDir);
-  hud.day.textContent = mu > 0.05 ? 'Daylight' : mu > -0.1 ? 'Twilight' : 'Night';
-
-  const total = state.offsetHours + state.timelapseHours;
-  hud.offset.textContent = Math.abs(total) < 0.01 && !state.timelapse
-    ? 'Live'
-    : `${total >= 0 ? '+' : '−'}${Math.floor(Math.abs(total))}h ${pad(Math.round((Math.abs(total) % 1) * 60) % 60)}m`;
+  const date = new Date();
+  if (hud.time) hud.time.textContent = folsomClock.format(date);
+  if (hud.sky) {
+    const mu = folsomDir.dot(sunDir);
+    hud.sky.textContent = mu > 0.05 ? 'Daylight' : mu > -0.1 ? 'Twilight' : 'Night';
+  }
+  if (hud.countdown && conferenceStart) {
+    const days = Math.ceil((conferenceStart - date.getTime()) / 86400000);
+    hud.countdown.textContent = days > 1 ? `${days} days` : days === 1 ? 'Tomorrow' : days > -1 ? 'Today' : 'Concluded';
+  }
 }
 
 // ---------------------------------------------------------------- UI wiring
-const slider = document.getElementById('time-offset');
-slider.addEventListener('input', () => {
-  state.offsetHours = parseFloat(slider.value);
-  state.timelapseHours = 0;
-  setTimelapse(false);
-});
-
-const lapseBtn = document.getElementById('timelapse');
-function setTimelapse(on) {
-  state.timelapse = on;
-  lapseBtn.setAttribute('aria-pressed', String(on));
-  lapseBtn.querySelector('span').textContent = on ? 'Pause' : 'Timelapse';
-}
-lapseBtn.addEventListener('click', () => setTimelapse(!state.timelapse));
-
-document.getElementById('time-live').addEventListener('click', () => {
-  state.offsetHours = 0;
-  state.timelapseHours = 0;
-  slider.value = '0';
-  setTimelapse(false);
-});
-
 const layerTargets = { clouds: 1, lights: 1, atmosphere: 1 };
-document.querySelectorAll('[data-layer]').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const key = btn.dataset.layer;
-    const on = btn.getAttribute('aria-pressed') !== 'true';
-    btn.setAttribute('aria-pressed', String(on));
-    layerTargets[key] = on ? 1 : 0;
-  });
-});
 
 function setExplore(on) {
   state.explore = on;
@@ -341,11 +342,11 @@ function setExplore(on) {
   [viewShift.target, viewShift.targetY] = heroShift();
   if (on) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.getElementById('explore-exit').focus({ preventScroll: true });
+    $('explore-exit')?.focus({ preventScroll: true });
   }
 }
-document.getElementById('explore').addEventListener('click', () => setExplore(true));
-document.getElementById('explore-exit').addEventListener('click', () => setExplore(false));
+document.querySelectorAll('[data-explore]').forEach((b) => b.addEventListener('click', () => setExplore(true)));
+$('explore-exit')?.addEventListener('click', () => setExplore(false));
 addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && state.explore) setExplore(false);
 });
@@ -416,7 +417,12 @@ function frame() {
   applyViewOffset();
 
   controls.update(dt);
-  updateHud(date, sub, performance.now());
+  updateHud(performance.now());
+
+  // Pulse the Folsom marker.
+  const pulse = (clock.elapsedTime % 2.2) / 2.2;
+  ring.scale.setScalar(1 + pulse * 2.2);
+  ringMat.opacity = 1 - pulse;
 
   if (scrollFade > 0.001 || state.explore) composer.render(dt);
 }
