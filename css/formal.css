@@ -49,8 +49,7 @@ button { font: inherit; color: inherit; }
   opacity: 0; transition: opacity 1.6s var(--ease);
 }
 body.loaded .stage { transition: none; }
-#globe { display: block; width: 100%; height: 100%; cursor: grab; }
-#globe:active { cursor: grabbing; }
+#globe { display: block; width: 100%; height: 100%; }
 .vignette {
   position: absolute; inset: 0; pointer-events: none;
   background:
@@ -58,7 +57,6 @@ body.loaded .stage { transition: none; }
     linear-gradient(90deg, rgba(7, 21, 48, 0.85) 0%, rgba(7, 21, 48, 0.3) 40%, transparent 62%);
   transition: opacity 0.8s var(--ease);
 }
-body.exploring .vignette { opacity: 0.3; }
 
 /* ------------------------------------------------------------ loader */
 .loader {
@@ -94,6 +92,23 @@ body.loaded .loader { opacity: 0; visibility: hidden; }
   transition: background 0.2s, color 0.2s;
 }
 .nav-links .nav-cta:hover { background: var(--white); color: var(--navy); }
+
+/* Host-school label that tracks the pin on the globe. */
+.pin-label {
+  position: absolute; left: 0; top: 0; pointer-events: none;
+  transition: opacity 0.4s;
+}
+.pin-label span {
+  position: absolute; left: 26px; bottom: 18px; white-space: nowrap;
+  padding: 7px 12px 7px 14px;
+  background: rgba(7, 21, 48, 0.72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  border-left: 2px solid var(--red); color: var(--white);
+  font-family: var(--serif); font-size: 15px;
+}
+.pin-label span::after {
+  content: ""; position: absolute; left: -22px; bottom: -14px; width: 28px; height: 1px;
+  background: rgba(255, 255, 255, 0.7); transform: rotate(-35deg); transform-origin: right center;
+}
 
 /* ------------------------------------------------------------ hero */
 main { position: relative; z-index: 1; }
@@ -150,27 +165,6 @@ h1 em { color: #c9d8f5; }
 .hud dt { color: var(--on-dark-3); letter-spacing: 0.04em; }
 .hud dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 500; }
 
-.exit, .explore-hint {
-  position: absolute; left: 50%; transform: translate(-50%, 8px);
-  opacity: 0; visibility: hidden;
-  transition: opacity 0.4s var(--ease), transform 0.5s var(--ease), visibility 0.4s;
-}
-.exit {
-  top: 88px; display: inline-flex; align-items: center; gap: 8px;
-  height: 40px; padding: 0 18px;
-  border: 1px solid rgba(255, 255, 255, 0.5); background: rgba(7, 21, 48, 0.6); color: var(--white);
-  font-size: 12.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
-}
-.explore-hint {
-  top: 140px; margin: 0; white-space: nowrap; pointer-events: none;
-  font-size: 12.5px; letter-spacing: 0.04em; color: var(--on-dark-2);
-}
-body.exploring .exit, body.exploring .explore-hint { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
-body.exploring .explore-hint { animation: hint-out 0.6s 5s var(--ease) forwards; }
-@keyframes hint-out { to { opacity: 0; visibility: hidden; } }
-body.exploring .hero-copy { opacity: 0; transform: translateX(-24px); pointer-events: none; visibility: hidden; transition: opacity 0.4s, transform 0.6s var(--ease), visibility 0.4s; }
-body.exploring .hero { pointer-events: none; }
-body.exploring .scroll-cue, body.exploring .nav-links { opacity: 0; pointer-events: none; }
 
 .scroll-cue {
   position: absolute; left: 50%; bottom: 36px; transform: translateX(-50%);
@@ -274,7 +268,7 @@ h2 em { color: var(--blue); }
   .vignette { background: linear-gradient(180deg, rgba(7, 21, 48, 0.2) 0%, rgba(7, 21, 48, 0) 40%, rgba(7, 21, 48, 0.92) 74%); }
   .hero { align-items: end; padding-bottom: 72px; }
   .hero-copy { padding-top: 0; }
-  .hud, .explore-hint, .scroll-cue { display: none; }
+  .hud, .scroll-cue { display: none; }
   .nav-links a:not(.nav-cta) { display: none; }
   .divisions, .register, .timeline { grid-template-columns: 1fr; }
 }
@@ -290,4 +284,11 @@ h2 em { color: var(--blue); }
 @media (max-width: 640px) {
   .hero { padding-bottom: 28px; }
   .hero .eyebrow { font-size: 10.5px; letter-spacing: 0.12em; text-shadow: 0 1px 10px rgba(7, 21, 48, 0.9); }
+}
+.pin-label::before {
+  content: ""; position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--red); border: 2px solid var(--white);
+}
+@media (max-width: 640px) {
+  .pin-label span { display: none; }
 }

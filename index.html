@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>ARCMUN 2027</title>
-  <meta name="description" content="ARCMUN is a one-day Model United Nations conference in Folsom, California for high school and middle school delegates. March 21, 2027.">
+  <meta name="description" content="ARCMUN is a one-day Model United Nations conference hosted by Folsom High School in Folsom, California for high school and middle school delegates. March 21, 2027.">
   <meta name="theme-color" content="#0b1f4d">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%231f5bff' stroke='%230b1f4d' stroke-width='3'/><circle cx='22' cy='11' r='4' fill='%23e8323c'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,6 +25,7 @@
 <body data-conference="2027-03-21">
   <div class="stage" aria-hidden="true">
     <canvas id="globe"></canvas>
+    <div id="pin-label" class="pin-label"><span>Folsom High School</span></div>
     <div class="vignette"></div>
   </div>
 
@@ -50,34 +51,27 @@
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow bubble"><span class="live-dot" aria-hidden="true"></span>Folsom, CA · March 21, 2027</p>
+        <p class="eyebrow bubble"><span class="live-dot" aria-hidden="true"></span>Folsom High School · March 21, 2027</p>
         <h1 id="hero-title">The world needs <em><span>a few good</span> <span>delegates.</span></em></h1>
-        <p class="lede">ARCMUN is a one-day Model United Nations conference in Folsom for high school and middle school students. Represent a country, argue its case in committee, and pass a resolution.</p>
+        <p class="lede">ARCMUN is a one-day Model United Nations conference hosted by Folsom High School, open to high school and middle school students. Represent a country, argue its case in committee, and pass a resolution.</p>
         <div class="cta">
           <a class="btn btn-primary" href="#register">
             <span>Registration info</span>
             <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <button class="btn btn-ghost" type="button" data-explore>Spin the globe</button>
+          <a class="btn btn-ghost" href="#schedule">See the schedule</a>
         </div>
       </div>
 
       <div class="sticker" aria-hidden="true"><span>HS + MS<br>welcome!</span></div>
 
       <aside class="hud" aria-label="Folsom right now">
-        <p class="hud-title">Meanwhile, in Folsom…</p>
+        <p class="hud-title">Meanwhile, at Folsom High…</p>
         <dl>
           <div><dt>Local time</dt><dd id="hud-time">—</dd></div>
-          <div><dt>Sky</dt><dd><span class="tag" id="hud-sky">—</span></dd></div>
           <div><dt>Gavel drops in</dt><dd id="hud-countdown">—</dd></div>
         </dl>
       </aside>
-
-      <button id="explore-exit" class="exit" type="button">
-        <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        Back to the site
-      </button>
-      <p class="explore-hint">Drag to spin · scroll or pinch to zoom · red dot = Folsom</p>
 
       <a class="scroll-cue" href="#about" aria-label="Scroll to learn about ARCMUN"><span></span></a>
     </section>
@@ -86,13 +80,13 @@
       <div class="section-head">
         <p class="eyebrow">What is ARCMUN?</p>
         <h2>One day. One room. <mark>The whole planet.</mark></h2>
-        <p class="section-lede">Model UN puts students in the seats of real diplomats. Each delegate represents a country, researches where it stands, and negotiates with everyone else to write a resolution that can win a vote. At ARCMUN, you get the full experience in a single day.</p>
+        <p class="section-lede">Model UN puts students in the seats of real diplomats. Each delegate represents a country, researches where it stands, and negotiates with everyone else to write a resolution that can win a vote. At ARCMUN, hosted by Folsom High School, you get the full experience in a single day.</p>
       </div>
 
       <div class="stats">
         <div><strong>1</strong><span>day of debate on March 21, 2027</span></div>
         <div><strong>HS+MS</strong><span>high school and middle school delegates</span></div>
-        <div><strong>Folsom</strong><span>California, venue to be announced</span></div>
+        <div><strong>FHS</strong><span>hosted at Folsom High School, Folsom, California</span></div>
       </div>
 
       <h3 class="subhead">How it works</h3>
@@ -183,11 +177,11 @@
         <div class="section-head">
           <p class="eyebrow">Register</p>
           <h2>Save the date. <mark>Seats are coming.</mark></h2>
-          <p class="section-lede">Registration hasn't opened yet. Details on fees, deadlines and the venue will be posted here first.</p>
+          <p class="section-lede">Registration hasn't opened yet. Details on fees and deadlines will be posted here first.</p>
         </div>
         <dl class="facts">
           <div><dt>When</dt><dd>March 21, 2027</dd></div>
-          <div><dt>Where</dt><dd>Folsom, California<small>Venue to be announced</small></dd></div>
+          <div><dt>Where</dt><dd>Folsom High School<small>1655 Iron Point Road, Folsom, CA 95630</small></dd></div>
           <div><dt>Who</dt><dd>High school and middle school delegates</dd></div>
           <div><dt>Fees</dt><dd>To be announced</dd></div>
           <div><dt>Contact</dt><dd>To be announced</dd></div>
@@ -199,7 +193,7 @@
     <footer class="footer">
       <div>
         <p class="footer-mark">ARCMUN</p>
-        <p>Model United Nations · Folsom, California · March 21, 2027</p>
+        <p>Model United Nations · Hosted by Folsom High School · March 21, 2027</p>
         <p class="credits">Globe imagery by <a href="https://www.solarsystemscope.com/textures/" rel="noopener">Solar System Scope</a> (CC BY 4.0), based on NASA data. Rendered with <a href="https://threejs.org" rel="noopener">three.js</a>.</p>
       </div>
       <a class="preview-switch" href="formal.html">Preview the formal version →</a>
