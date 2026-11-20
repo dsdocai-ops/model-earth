@@ -48,7 +48,62 @@
   </header>
 
   <main id="top">
-    <section class="hero" aria-labelledby="hero-title">
+    <section id="intro" class="intro" aria-labelledby="hero-title">
+      <div class="intro-sticky">
+
+      <div class="intro-photo" aria-hidden="true"><img src="assets/photos/fhs-iron-point.jpg" alt="" width="1600" height="900"></div>
+      <div class="intro-arrival">
+        <p class="bubble">March 21, 2027 at Folsom High School</p>
+        <p class="arrival-title">Welcome, delegates.</p>
+      </div>
+      <div class="intro-gate" aria-hidden="true">
+        <div class="gate-leaves">
+          <div class="gate-leaf gate-left"><svg viewBox="0 0 300 520" preserveAspectRatio="none" aria-hidden="true">
+              <g fill="none" stroke="#0b1f4d" stroke-linecap="round">
+                <path d="M20 70V505M58 70V505M96 70V505M134 70V505M172 70V505M210 70V505M248 70V505M286 70V505" stroke-width="11"/>
+                <path d="M12 80H294M12 300H294M12 495H294" stroke-width="14"/>
+              </g>
+              <g fill="#e8323c" stroke="#0b1f4d" stroke-width="5" stroke-linejoin="round">
+                <path d="M20 30l12 40H8zM58 30l12 40H46zM96 30l12 40H84zM134 30l12 40h-24zM172 30l12 40h-24zM210 30l12 40h-24zM248 30l12 40h-24zM286 30l12 40h-24z"/>
+              </g>
+              <circle cx="150" cy="190" r="56" fill="#fff" stroke="#0b1f4d" stroke-width="10"/>
+              <path d="M94 190h112M150 134c22 22 22 90 0 112M150 134c-22 22-22 90 0 112" fill="none" stroke="#1f5bff" stroke-width="7"/>
+            </svg></div>
+          <div class="gate-leaf gate-right"><svg viewBox="0 0 300 520" preserveAspectRatio="none" aria-hidden="true">
+              <g fill="none" stroke="#0b1f4d" stroke-linecap="round">
+                <path d="M20 70V505M58 70V505M96 70V505M134 70V505M172 70V505M210 70V505M248 70V505M286 70V505" stroke-width="11"/>
+                <path d="M12 80H294M12 300H294M12 495H294" stroke-width="14"/>
+              </g>
+              <g fill="#e8323c" stroke="#0b1f4d" stroke-width="5" stroke-linejoin="round">
+                <path d="M20 30l12 40H8zM58 30l12 40H46zM96 30l12 40H84zM134 30l12 40h-24zM172 30l12 40h-24zM210 30l12 40h-24zM248 30l12 40h-24zM286 30l12 40h-24z"/>
+              </g>
+              <circle cx="150" cy="190" r="56" fill="#fff" stroke="#0b1f4d" stroke-width="10"/>
+              <path d="M94 190h112M150 134c22 22 22 90 0 112M150 134c-22 22-22 90 0 112" fill="none" stroke="#1f5bff" stroke-width="7"/>
+            </svg></div>
+        </div>
+        <svg class="gate-frame" viewBox="0 0 1000 700" aria-hidden="true">
+          <g stroke="#0b1f4d" stroke-width="8" stroke-linejoin="round">
+            <rect x="20" y="150" width="120" height="540" fill="#fff"/>
+            <rect x="860" y="150" width="120" height="540" fill="#fff"/>
+            <rect x="8" y="120" width="144" height="44" fill="#1f5bff"/>
+            <rect x="848" y="120" width="144" height="44" fill="#1f5bff"/>
+            <path d="M40 120l40-50 40 50zM880 120l40-50 40 50z" fill="#e8323c"/>
+            <path d="M140 190Q500 40 860 190L860 250Q500 110 140 250Z" fill="#e8323c"/>
+          </g>
+          <g stroke="#0b1f4d" stroke-width="4" opacity=".35">
+            <path d="M20 260H140M20 370H140M20 480H140M20 590H140M80 150V260M50 260V370M110 370V480M80 480V590M860 260H980M860 370H980M860 480H980M860 590H980M920 150V260M890 260V370M950 370V480M920 480V590"/>
+          </g>
+          <path id="arch-text" d="M190 205Q500 85 810 205" fill="none"/>
+          <text class="gate-sign"><textPath href="#arch-text" startOffset="50%" text-anchor="middle">Welcome to ARCMUN</textPath></text>
+        </svg>
+      </div>
+      <div class="intro-clouds" aria-hidden="true">
+        <img src="assets/photos/cloud-1.png" alt=""><img src="assets/photos/cloud-2.png" alt=""><img src="assets/photos/cloud-3.png" alt=""><img src="assets/photos/cloud-4.png" alt="">
+        <img src="assets/photos/cloud-2.png" alt=""><img src="assets/photos/cloud-1.png" alt=""><img src="assets/photos/cloud-4.png" alt=""><img src="assets/photos/cloud-3.png" alt="">
+        <img src="assets/photos/cloud-1.png" alt=""><img src="assets/photos/cloud-3.png" alt="">
+        <div class="intro-white"></div>
+      </div>
+
       <div class="hero-copy">
         <p class="bubble">March 21, 2027 at Folsom High School</p>
         <h1 id="hero-title">The world needs <em><span>a few good</span> <span>delegates.</span></em></h1>
@@ -58,7 +113,7 @@
         </div>
       </div>
 
-      <button id="pin-label" class="pin-label" type="button" aria-haspopup="dialog" aria-controls="campus"><span>Folsom High School</span></button>
+      <button id="pin-label" class="pin-label" type="button" aria-label="Fly to Folsom High School"><span>Folsom High School</span></button>
 
       <div class="sticker" aria-hidden="true"><span>HS + MS<br>welcome!</span></div>
 
@@ -69,6 +124,8 @@
           <div><dt>Gavel drops in</dt><dd id="hud-countdown">—</dd></div>
         </dl>
       </aside>
+      <p class="scroll-hint" aria-hidden="true">Scroll to fly in</p>
+      </div>
     </section>
 
     <section id="about" class="section paper">
@@ -136,23 +193,5 @@
     </footer>
   </main>
 
-  <dialog id="campus" class="campus" aria-labelledby="campus-title">
-    <figure class="campus-photo">
-      <img id="campus-img" src="assets/photos/fhs-iron-point.jpg" width="1600" height="900" alt="Aerial view of Folsom High School from Iron Point Road, showing the main parking lots and campus buildings">
-    </figure>
-    <div class="campus-body">
-      <h2 id="campus-title">Folsom High School</h2>
-      <p class="campus-address">1655 Iron Point Road, Folsom, CA 95630</p>
-      <div class="campus-thumbs" role="group" aria-label="Campus photos">
-        <button type="button" aria-pressed="true" data-src="assets/photos/fhs-iron-point.jpg" data-alt="Aerial view of Folsom High School from Iron Point Road, showing the main parking lots and campus buildings"><img src="assets/photos/thumb-fhs-iron-point.jpg" alt="" width="240" height="135"><span>From Iron Point Road</span></button>
-        <button type="button" aria-pressed="false" data-src="assets/photos/fhs-campus.jpg" data-alt="Aerial view of the Folsom High School quad and classroom buildings"><img src="assets/photos/thumb-fhs-campus.jpg" alt="" width="240" height="135"><span>The main quad</span></button>
-      </div>
-      <div class="campus-actions">
-        <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&amp;query=Folsom%20High%20School%2C%201655%20Iron%20Point%20Rd%2C%20Folsom%2C%20CA" target="_blank" rel="noopener">Get directions</a>
-        <button class="btn btn-ghost" type="button" data-close>Close</button>
-      </div>
-      <p class="campus-credit">Photos courtesy of Folsom High School.</p>
-    </div>
-  </dialog>
 </body>
 </html>

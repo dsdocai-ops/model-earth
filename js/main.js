@@ -200,10 +200,11 @@ scene.add(marker);
 // Close-up framing on Northern California; clicking the school pin flies in closer.
 const DISTANCE_HERO = 2.55;
 const DISTANCE_ZOOMED = 1.45;
+const DISTANCE_DIVE = 1.16; // end of the scroll fly-in, just above the cloud tops
 const view = { distance: DISTANCE_HERO, target: DISTANCE_HERO };
 function placeCamera(t) {
   // Sway fades out as the camera flies in, so the zoom lands squarely on the school.
-  const zoom = (DISTANCE_HERO - view.distance) / (DISTANCE_HERO - DISTANCE_ZOOMED);
+  const zoom = Math.min(Math.max((DISTANCE_HERO - view.distance) / (DISTANCE_HERO - DISTANCE_ZOOMED), 0), 1);
   const sway = reduceMotion ? 0 : Math.sin(t * 0.07) * 3 * DEG * (1 - zoom);
   const latOffset = (1 - zoom) * 4 * DEG;
   latLonToVector(HOST.lat - latOffset, HOST.lon + sway, camera.position).multiplyScalar(view.distance);
@@ -235,13 +236,15 @@ new ResizeObserver(resize).observe(stage);
 resize();
 
 // ---------------------------------------------------------------- pin label
+const intro = document.getElementById('intro');
+if (intro && reduceMotion) document.body.classList.add('no-intro');
 const pinLabel = document.getElementById('pin-label');
 const projected = new THREE.Vector3();
 function placeLabel() {
   if (!pinLabel) return;
   projected.copy(marker.position).project(camera);
   const facing = marker.position.clone().sub(camera.position).dot(hostDir) < 0;
-  const visible = facing && scrollY < innerHeight * 0.35;
+  const visible = facing && (intro ? introP < 0.02 : scrollY < innerHeight * 0.35);
   pinLabel.style.opacity = visible ? '1' : '0';
   pinLabel.style.pointerEvents = visible ? 'auto' : 'none';
   pinLabel.style.transform = `translate(${(projected.x * 0.5 + 0.5) * width}px, ${(-projected.y * 0.5 + 0.5) * height}px)`;
@@ -250,7 +253,12 @@ function placeLabel() {
 // ---------------------------------------------------------------- campus photos
 const campus = document.getElementById('campus');
 let openTimer;
-if (campus && pinLabel) {
+if (intro && pinLabel) {
+  pinLabel.addEventListener('click', () => {
+    const end = intro.offsetTop + intro.offsetHeight - innerHeight;
+    window.scrollTo({ top: end, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+} else if (campus && pinLabel) {
   const img = document.getElementById('campus-img');
   pinLabel.addEventListener('click', () => {
     view.target = DISTANCE_ZOOMED;
@@ -307,15 +315,105 @@ function updateHud(now) {
   }
 }
 
-// Scroll: let the planet sink and dim as the sections slide over it.
+// ---------------------------------------------------------------- scroll
+const clamp01 = (x) => Math.min(Math.max(x, 0), 1);
+// Progress of x through [a, b]; a > b gives the reverse ramp.
+const seg = (a, b, x) => clamp01((x - a) / (b - a));
+const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+const lerp = (a, b, t) => a + (b - a) * t;
+const showLayer = (el, o) => {
+  if (!el) return;
+  el.style.opacity = String(o);
+  el.style.visibility = o > 0.002 ? 'visible' : 'hidden';
+};
+
 let scrollFade = 1;
+let markerFade = 1;
+
+// Scroll-driven fly-in (playful page): space -> clouds -> campus -> gate -> site.
+const L = intro ? {
+  fade: [...document.querySelectorAll('.hero-copy, .hud, .sticker, .scroll-hint')],
+  photo: intro.querySelector('.intro-photo'),
+  img: intro.querySelector('.intro-photo img'),
+  arrival: intro.querySelector('.intro-arrival'),
+  gate: intro.querySelector('.intro-gate'),
+  leaves: intro.querySelector('.gate-leaves'),
+  left: intro.querySelector('.gate-left'),
+  right: intro.querySelector('.gate-right'),
+  cloudWrap: intro.querySelector('.intro-clouds'),
+  clouds: [...intro.querySelectorAll('.intro-clouds img')],
+  white: intro.querySelector('.intro-white'),
+} : null;
+// Each cloud sits at a depth along the dive, offset from the centre and slightly turned.
+const cloudPlanes = L ? L.clouds.map((el, i) => ({
+  el,
+  z: 0.18 + i * 0.13,
+  x: [-38, 30, -12, 42, -30, 18, -44, 34, 6, -20][i % 10],
+  y: [-22, 18, 30, -28, 8, -34, 26, 12, -10, 24][i % 10],
+  r: (i * 47) % 360,
+})) : [];
+
+function updateIntro() {
+  const p = introP;
+  const ui = 1 - seg(0, 0.04, p);
+  L.fade.forEach((el) => { el.style.opacity = String(ui); el.style.visibility = ui > 0.01 ? 'visible' : 'hidden'; });
+
+  // Globe: dive from orbit to just above the cloud deck, then hand over to the clouds.
+  view.distance = lerp(DISTANCE_HERO, DISTANCE_DIVE, ease(seg(0.03, 0.36, p)));
+  markerFade = 1 - seg(0.16, 0.26, p);
+  const globe = 1 - seg(0.4, 0.46, p);
+  stage.style.opacity = String(globe);
+  scrollFade = globe;
+
+  // Cloud fly-through: planes rush past the camera, peaking in a white-out.
+  const q = seg(0.2, 0.5, p);
+  showLayer(L.cloudWrap, q > 0 && q < 1 ? 1 : 0);
+  const cam = q * 1.55;
+  for (const c of cloudPlanes) {
+    const dz = c.z - cam;
+    if (dz <= 0.02 || dz > 0.9) { c.el.style.opacity = '0'; continue; }
+    const scale = 0.35 / dz;
+    c.el.style.opacity = String(seg(0.9, 0.55, dz) * seg(0.02, 0.16, dz));
+    c.el.style.transform = `translate(${c.x * scale}vw, ${c.y * scale}vh) rotate(${c.r}deg) scale(${scale})`;
+  }
+  showLayer(L.white, 0.96 * seg(0.33, 0.4, p) * (1 - seg(0.43, 0.5, p)));
+
+  // The campus from Iron Point Road, pushing in toward the front drop-off.
+  showLayer(L.photo, seg(0.4, 0.46, p));
+  const push = ease(seg(0.4, 0.7, p));
+  const soften = seg(0.6, 0.7, p);
+  L.img.style.transform = `scale(${1 + 1.8 * push})`;
+  L.img.style.filter = `blur(${soften * 6}px) brightness(${1 - soften * 0.3})`;
+
+  // The gate: approach, swing open, pass through.
+  const approach = ease(seg(0.56, 0.72, p));
+  const open = ease(seg(0.7, 0.84, p));
+  const pass = ease(seg(0.8, 0.94, p));
+  showLayer(L.gate, seg(0.56, 0.63, p) * (1 - seg(0.86, 0.94, p)));
+  L.gate.style.transform = `scale(${0.3 + 0.7 * approach + 3.2 * pass})`;
+  L.left.style.transform = `rotateY(${-108 * open}deg)`;
+  L.right.style.transform = `rotateY(${108 * open}deg)`;
+
+  // Through the gate: the site itself.
+  showLayer(L.arrival, seg(0.74, 0.86, p));
+  L.arrival.style.setProperty('--arrive', String(0.86 + 0.14 * ease(seg(0.74, 0.94, p))));
+}
+
+let introP = 0;
 function onScroll() {
+  if (intro && !reduceMotion) {
+    const total = intro.offsetHeight - innerHeight;
+    introP = clamp01(-intro.getBoundingClientRect().top / total);
+    updateIntro();
+    return;
+  }
   const p = Math.min(Math.max(scrollY / innerHeight, 0), 1.2);
   scrollFade = 1 - Math.min(Math.max((p - 0.35) / 0.75, 0), 1);
   stage.style.transform = `translate3d(0, ${-p * 12}vh, 0) scale(${1 - p * 0.06})`;
   stage.style.opacity = String(0.15 + scrollFade * 0.85);
 }
 addEventListener('scroll', onScroll, { passive: true });
+addEventListener('resize', onScroll);
 onScroll();
 
 // ---------------------------------------------------------------- loop
@@ -349,7 +447,7 @@ function frame() {
   // Clouds drift slowly relative to the surface.
   earthMat.uniforms.uCloudOffset.value = (earthMat.uniforms.uCloudOffset.value + dt * 0.0006) % 1;
 
-  view.distance += (view.target - view.distance) * (1 - Math.exp(-dt * 3.2));
+  if (!intro || reduceMotion) view.distance += (view.target - view.distance) * (1 - Math.exp(-dt * 3.2));
   placeCamera(clock.elapsedTime);
   placeLabel();
   updateHud(performance.now());
@@ -357,7 +455,11 @@ function frame() {
   // Pulse the host-school marker.
   const pulse = (clock.elapsedTime % 2.2) / 2.2;
   ring.scale.setScalar(1 + pulse * 2.2);
-  ringMat.opacity = 1 - pulse;
+  ringMat.opacity = (1 - pulse) * markerFade;
+  pin.material.opacity = markerFade;
+  marker.visible = markerFade > 0.01;
+  // Keep the pin the same size on screen as the camera dives.
+  marker.scale.setScalar((view.distance - 1) / (DISTANCE_HERO - 1));
 
   if (scrollFade > 0.001) composer.render(dt);
 }

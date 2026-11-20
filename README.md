@@ -1,6 +1,10 @@
-# Model Earth
+# ARCMUN 2027
 
-A website whose hero is a real-time, physically based 3D Earth, rendered in the browser with three.js.
+Website for ARCMUN, a one-day Model United Nations conference hosted by Folsom High School on March 21, 2027.
+
+`index.html` is the main (playful) version. Its opening is a scroll-driven fly-in: from a physically based 3D Earth centred on Folsom, through the clouds, down onto the campus (aerial photo courtesy of Folsom High School, placeholder), through an illustrated gate, and into the site. `formal.html` is an earlier alternate design that is no longer being updated.
+
+The globe itself is rendered in the browser with three.js.
 
 ## What makes it look real
 
