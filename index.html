@@ -25,7 +25,6 @@
 <body data-conference="2027-03-21">
   <div class="stage" aria-hidden="true">
     <canvas id="globe"></canvas>
-    <div id="pin-label" class="pin-label"><span>Folsom High School</span></div>
     <div class="vignette"></div>
   </div>
 
@@ -58,6 +57,8 @@
           <a class="btn btn-ghost" href="#schedule">See the schedule</a>
         </div>
       </div>
+
+      <button id="pin-label" class="pin-label" type="button" aria-haspopup="dialog" aria-controls="campus"><span>Folsom High School</span></button>
 
       <div class="sticker" aria-hidden="true"><span>HS + MS<br>welcome!</span></div>
 
@@ -134,5 +135,24 @@
       <a class="preview-switch" href="formal.html">See the formal version</a>
     </footer>
   </main>
+
+  <dialog id="campus" class="campus" aria-labelledby="campus-title">
+    <figure class="campus-photo">
+      <img id="campus-img" src="assets/photos/fhs-iron-point.jpg" width="1600" height="900" alt="Aerial view of Folsom High School from Iron Point Road, showing the main parking lots and campus buildings">
+    </figure>
+    <div class="campus-body">
+      <h2 id="campus-title">Folsom High School</h2>
+      <p class="campus-address">1655 Iron Point Road, Folsom, CA 95630</p>
+      <div class="campus-thumbs" role="group" aria-label="Campus photos">
+        <button type="button" aria-pressed="true" data-src="assets/photos/fhs-iron-point.jpg" data-alt="Aerial view of Folsom High School from Iron Point Road, showing the main parking lots and campus buildings"><img src="assets/photos/thumb-fhs-iron-point.jpg" alt="" width="240" height="135"><span>From Iron Point Road</span></button>
+        <button type="button" aria-pressed="false" data-src="assets/photos/fhs-campus.jpg" data-alt="Aerial view of the Folsom High School quad and classroom buildings"><img src="assets/photos/thumb-fhs-campus.jpg" alt="" width="240" height="135"><span>The main quad</span></button>
+      </div>
+      <div class="campus-actions">
+        <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&amp;query=Folsom%20High%20School%2C%201655%20Iron%20Point%20Rd%2C%20Folsom%2C%20CA" target="_blank" rel="noopener">Get directions</a>
+        <button class="btn btn-ghost" type="button" data-close>Close</button>
+      </div>
+      <p class="campus-credit">Photos courtesy of Folsom High School.</p>
+    </div>
+  </dialog>
 </body>
 </html>

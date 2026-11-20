@@ -197,10 +197,16 @@ marker.renderOrder = pin.renderOrder = ring.renderOrder = 3;
 scene.add(marker);
 
 // Camera: looks straight down at Folsom from slightly south, with a slow, small sway.
-const CAMERA_DISTANCE = 4.5;
+// Close-up framing on Northern California; clicking the school pin flies in closer.
+const DISTANCE_HERO = 2.55;
+const DISTANCE_ZOOMED = 1.45;
+const view = { distance: DISTANCE_HERO, target: DISTANCE_HERO };
 function placeCamera(t) {
-  const sway = reduceMotion ? 0 : Math.sin(t * 0.07) * 4 * DEG;
-  latLonToVector(HOST.lat - 6 * DEG, HOST.lon + sway, camera.position).multiplyScalar(CAMERA_DISTANCE);
+  // Sway fades out as the camera flies in, so the zoom lands squarely on the school.
+  const zoom = (DISTANCE_HERO - view.distance) / (DISTANCE_HERO - DISTANCE_ZOOMED);
+  const sway = reduceMotion ? 0 : Math.sin(t * 0.07) * 3 * DEG * (1 - zoom);
+  const latOffset = (1 - zoom) * 4 * DEG;
+  latLonToVector(HOST.lat - latOffset, HOST.lon + sway, camera.position).multiplyScalar(view.distance);
   camera.up.set(0, 1, 0);
   camera.lookAt(0, 0, 0);
 }
@@ -235,8 +241,36 @@ function placeLabel() {
   if (!pinLabel) return;
   projected.copy(marker.position).project(camera);
   const facing = marker.position.clone().sub(camera.position).dot(hostDir) < 0;
-  pinLabel.style.opacity = facing ? '1' : '0';
+  const visible = facing && scrollY < innerHeight * 0.35;
+  pinLabel.style.opacity = visible ? '1' : '0';
+  pinLabel.style.pointerEvents = visible ? 'auto' : 'none';
   pinLabel.style.transform = `translate(${(projected.x * 0.5 + 0.5) * width}px, ${(-projected.y * 0.5 + 0.5) * height}px)`;
+}
+
+// ---------------------------------------------------------------- campus photos
+const campus = document.getElementById('campus');
+let openTimer;
+if (campus && pinLabel) {
+  const img = document.getElementById('campus-img');
+  pinLabel.addEventListener('click', () => {
+    view.target = DISTANCE_ZOOMED;
+    clearTimeout(openTimer);
+    openTimer = setTimeout(() => campus.showModal(), reduceMotion ? 0 : 900);
+  });
+  campus.addEventListener('close', () => {
+    view.target = DISTANCE_HERO;
+    pinLabel.focus({ preventScroll: true });
+  });
+  campus.querySelector('[data-close]')?.addEventListener('click', () => campus.close());
+  // Click on the backdrop closes the dialog.
+  campus.addEventListener('click', (e) => { if (e.target === campus) campus.close(); });
+  campus.querySelectorAll('.campus-thumbs button').forEach((btn, _, all) => {
+    btn.addEventListener('click', () => {
+      img.src = btn.dataset.src;
+      img.alt = btn.dataset.alt;
+      all.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    });
+  });
 }
 
 // ---------------------------------------------------------------- HUD
@@ -315,6 +349,7 @@ function frame() {
   // Clouds drift slowly relative to the surface.
   earthMat.uniforms.uCloudOffset.value = (earthMat.uniforms.uCloudOffset.value + dt * 0.0006) % 1;
 
+  view.distance += (view.target - view.distance) * (1 - Math.exp(-dt * 3.2));
   placeCamera(clock.elapsedTime);
   placeLabel();
   updateHud(performance.now());
