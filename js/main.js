@@ -284,6 +284,13 @@ if (intro && pinLabel) {
 // ---------------------------------------------------------------- HUD
 const $ = (id) => document.getElementById(id);
 const hud = { time: $('hud-time'), countdown: $('hud-countdown') };
+// Demo: preview what the countdown shows on conference day.
+let previewLive = false;
+$('hud-preview')?.addEventListener('click', (e) => {
+  previewLive = !previewLive;
+  e.currentTarget.setAttribute('aria-pressed', String(previewLive));
+  lastHud = 0;
+});
 
 // Conference day, as a Pacific-time calendar date (e.g. "2027-03-21").
 const conferenceDay = document.body.dataset.conference;
@@ -309,7 +316,11 @@ function updateHud(now) {
   lastHud = now;
   const date = new Date();
   if (hud.time) hud.time.textContent = folsomClock.format(date);
-  if (hud.countdown && conferenceStart) {
+  if (hud.countdown && previewLive) {
+    hud.countdown.textContent = 'In session';
+    hud.countdown.classList.add('is-live');
+  } else if (hud.countdown && conferenceStart) {
+    hud.countdown.classList.remove('is-live');
     const days = Math.ceil((conferenceStart - date.getTime()) / 86400000);
     hud.countdown.textContent = days > 1 ? `${days} days` : days === 1 ? 'Tomorrow' : days > -1 ? 'Today' : 'Concluded';
   }

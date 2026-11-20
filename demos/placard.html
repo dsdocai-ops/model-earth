@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ARCMUN Placard</title>
+  <meta name="description" content="Design demo: ARCMUN 2027 built from committee-room placards and a gavel.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500;62..125,800;62..125,900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <style>
+    /* Layout: a committee room seen from the delegate's seat. Blue carpet, a wooden dais,
+       and every heading printed on a folded name placard. One moment of motion: the gavel. */
+    :root {
+      --carpet: #173a8a;
+      --carpet-2: #12306f;
+      --wood: #6b3d22;
+      --wood-2: #4e2b17;
+      --card: #ffffff;
+      --ink: #101a33;
+      --red: #d42a35;
+      --display: "Archivo", "Arial Narrow", sans-serif;
+      --serif: "Source Serif 4", Georgia, serif;
+      color-scheme: light;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; color: var(--card); font-family: var(--serif); font-size: 18px; line-height: 1.6;
+      background:
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 3px, transparent 3px 9px),
+        linear-gradient(180deg, var(--carpet), var(--carpet-2));
+    }
+    .wrap { overflow-x: clip; max-width: 1120px; margin: 0 auto; padding: 32px max(16px, env(safe-area-inset-right, 0px)) 96px max(16px, env(safe-area-inset-left, 0px)); }
+    .topbar { display: flex; justify-content: space-between; gap: 16px; font-family: var(--display); font-weight: 500; }
+    .topbar a { color: inherit; }
+
+    /* The placard: a tent card with a lit front face and a shadowed fold. */
+    .placard { display: inline-grid; justify-items: center; filter: drop-shadow(0 18px 18px rgba(0,0,0,0.35)); }
+    .placard .face {
+      background: var(--card); color: var(--ink); padding: 0.28em 0.8em 0.3em;
+      font-family: var(--display); font-weight: 900; font-stretch: 112%; line-height: 1;
+      clip-path: polygon(2% 0, 98% 0, 100% 100%, 0 100%);
+    }
+    .placard .fold { width: 104%; height: 0.32em; background: linear-gradient(#d7dbe6, #aeb5c7); clip-path: polygon(0 0, 100% 0, 97% 100%, 3% 100%); }
+
+    .hero { min-height: 88vh; padding-bottom: 24vh; display: grid; align-content: center; justify-items: center; gap: 34px; text-align: center; position: relative; }
+    .hero .placard { font-size: clamp(56px, 12vw, 150px); transform: rotate(-3deg); animation: raise 0.9s 0.3s cubic-bezier(.2,1.4,.4,1) both; }
+    @keyframes raise { from { transform: translateY(60px) rotate(-3deg); opacity: 0; } }
+    .hero p { max-width: 560px; color: #dfe6fb; font-size: 20px; }
+    .dais { position: absolute; left: -50vw; right: -50vw; bottom: 0; height: 18vh; background: linear-gradient(var(--wood), var(--wood-2)); border-top: 8px solid #8a5532; z-index: -1; }
+    .gavel { position: absolute; right: 6%; bottom: 15vh; width: clamp(120px, 16vw, 210px); transform-origin: 85% 80%; animation: bang 0.5s 1.4s ease-in both; }
+    @keyframes bang { 0% { transform: rotate(-35deg); } 70% { transform: rotate(6deg); } 100% { transform: rotate(0); } }
+    .hero .meta { font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: 0.02em; }
+
+    section { padding: 88px 0 0; display: grid; gap: 30px; justify-items: start; }
+    section > .placard { font-size: clamp(30px, 4.4vw, 54px); }
+    section:nth-of-type(even) > .placard { transform: rotate(2deg); }
+    section:nth-of-type(odd) > .placard { transform: rotate(-2deg); }
+    .lede { max-width: 640px; color: #dfe6fb; margin: 0; }
+
+    .row { display: flex; flex-wrap: wrap; gap: 28px 22px; }
+    .row .placard { font-size: 24px; }
+    .row .placard small { display: block; margin-top: 8px; font-family: var(--serif); font-weight: 400; font-size: 15px; font-stretch: 100%; color: #4a5470; }
+
+    .board { width: min(100%, 820px); background: #0d1b3e; border: 10px solid var(--wood); border-radius: 6px; padding: 18px 26px; box-shadow: 0 24px 40px -20px rgba(0,0,0,0.6); }
+    .board h3 { margin: 0 0 6px; font-family: var(--display); font-weight: 800; color: #ffd34d; font-size: 15px; letter-spacing: 0.08em; }
+    .board ol { margin: 0; padding: 0; list-style: none; counter-reset: s; }
+    .board li { counter-increment: s; display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.12); font-family: var(--display); font-weight: 500; }
+    .board li::before { content: counter(s); color: #ffd34d; font-weight: 900; }
+
+    .nameplates { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px 24px; width: 100%; }
+    .nameplate { background: linear-gradient(#f0d58a, #c9a24c); color: #2a1a06; padding: 18px 16px; border-radius: 4px; text-align: center; box-shadow: inset 0 0 0 3px rgba(255,255,255,0.35), 0 14px 20px -12px rgba(0,0,0,0.6); }
+    .nameplate strong { display: block; font-family: var(--display); font-weight: 900; font-size: 19px; line-height: 1.2; }
+    .nameplate span { display: block; margin-top: 8px; border-top: 1px solid rgba(42,26,6,0.4); padding-top: 6px; font-size: 14px; font-style: italic; opacity: 0.75; }
+
+    .motion { display: inline-flex; align-items: center; gap: 14px; padding: 18px 26px; background: var(--red); color: #fff; border-radius: 8px; font-family: var(--display); font-weight: 800; font-size: 20px; box-shadow: 0 8px 0 #8f1620; }
+    .motion small { font-weight: 500; font-size: 15px; opacity: 0.85; }
+
+    @media (prefers-reduced-motion: reduce) { .hero .placard, .gavel { animation: none; } }
+    @media (max-width: 760px) {
+      .nameplates { grid-template-columns: 1fr 1fr; }
+      .gavel { right: 2%; width: 100px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar"><span>ARCMUN 2027</span><a href="index.html">All design demos</a></div>
+
+    <header class="hero">
+      <div class="placard"><span class="face">ARCMUN</span><span class="fold"></span></div>
+      <p class="meta">March 21, 2027 at Folsom High School</p>
+      <p>The floor is open. One day of committee debate for high school and middle school delegates.</p>
+      <svg class="gavel" viewBox="0 0 220 160" aria-hidden="true">
+        <rect x="20" y="118" width="120" height="22" rx="6" fill="#4e2b17"/>
+        <g>
+          <rect x="94" y="36" width="104" height="14" rx="7" fill="#8a5532" transform="rotate(-28 94 36)"/>
+          <rect x="54" y="40" width="70" height="40" rx="10" fill="#6b3d22" transform="rotate(-28 54 40)"/>
+          <rect x="62" y="44" width="12" height="40" fill="#c9a24c" transform="rotate(-28 54 40)"/>
+        </g>
+      </svg>
+      <div class="dais" aria-hidden="true"></div>
+    </header>
+
+    <section>
+      <div class="placard"><span class="face">At a glance</span><span class="fold"></span></div>
+      <div class="row">
+        <div class="placard"><span class="face">March 21<small>2027</small></span><span class="fold"></span></div>
+        <div class="placard"><span class="face">Folsom High<small>1655 Iron Point Road</small></span><span class="fold"></span></div>
+        <div class="placard"><span class="face">HS + MS<small>Two divisions</small></span><span class="fold"></span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="placard"><span class="face">Committees</span><span class="fold"></span></div>
+      <p class="lede">Committees and topics will be announced soon. Each gets its own placard here.</p>
+      <div class="row">
+        <div class="placard"><span class="face">To be announced<small>High school</small></span><span class="fold"></span></div>
+        <div class="placard"><span class="face">To be announced<small>Middle school</small></span><span class="fold"></span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="placard"><span class="face">Order of the day</span><span class="fold"></span></div>
+      <div class="board">
+        <h3>Speakers list, March 21</h3>
+        <ol>
+          <li>Check-in</li><li>Opening ceremony</li><li>Committee session I</li>
+          <li>Lunch</li><li>Committee session II</li><li>Closing ceremony and awards</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <div class="placard"><span class="face">The dais</span><span class="fold"></span></div>
+      <div class="nameplates">
+        <div class="nameplate"><strong>Secretary-General</strong><span>Name to be announced</span></div>
+        <div class="nameplate"><strong>Deputy Secretary-General</strong><span>Name to be announced</span></div>
+        <div class="nameplate"><strong>Director-General</strong><span>Name to be announced</span></div>
+        <div class="nameplate"><strong>Chief of Staff</strong><span>Name to be announced</span></div>
+        <div class="nameplate"><strong>USG, Committees</strong><span>Name to be announced</span></div>
+        <div class="nameplate"><strong>USG, Logistics</strong><span>Name to be announced</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="placard"><span class="face">Registration</span><span class="fold"></span></div>
+      <p class="lede">Fees and deadlines will be posted soon.</p>
+      <span class="motion">Motion to register <small>Opens soon</small></span>
+    </section>
+  </div>
+</body>
+</html>

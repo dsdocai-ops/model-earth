@@ -43,6 +43,7 @@
       <a href="#committees">Committees</a>
       <a href="#schedule">Schedule</a>
       <a href="#secretariat">Secretariat</a>
+      <a href="guide.html">Guide</a>
       <a href="#register" class="nav-cta">Register</a>
     </nav>
   </header>
@@ -66,8 +67,14 @@
               <g fill="#e8323c" stroke="#0b1f4d" stroke-width="5" stroke-linejoin="round">
                 <path d="M20 30l12 40H8zM58 30l12 40H46zM96 30l12 40H84zM134 30l12 40h-24zM172 30l12 40h-24zM210 30l12 40h-24zM248 30l12 40h-24zM286 30l12 40h-24z"/>
               </g>
-              <circle cx="150" cy="190" r="56" fill="#fff" stroke="#0b1f4d" stroke-width="10"/>
-              <path d="M94 190h112M150 134c22 22 22 90 0 112M150 134c-22 22-22 90 0 112" fill="none" stroke="#1f5bff" stroke-width="7"/>
+              <circle cx="150" cy="190" r="60" fill="#fff" stroke="#0b1f4d" stroke-width="10"/>
+              <g fill="#e8323c" stroke="#0b1f4d" stroke-width="4">
+                <ellipse cx="150" cy="208" rx="26" ry="21"/>
+                <ellipse cx="117" cy="180" rx="10" ry="13" transform="rotate(-20 117 180)"/>
+                <ellipse cx="137" cy="164" rx="10" ry="13" transform="rotate(-6 137 164)"/>
+                <ellipse cx="163" cy="164" rx="10" ry="13" transform="rotate(6 163 164)"/>
+                <ellipse cx="183" cy="180" rx="10" ry="13" transform="rotate(20 183 180)"/>
+              </g>
             </svg></div>
           <div class="gate-leaf gate-right"><svg viewBox="0 0 300 520" preserveAspectRatio="none" aria-hidden="true">
               <g fill="none" stroke="#0b1f4d" stroke-linecap="round">
@@ -77,8 +84,14 @@
               <g fill="#e8323c" stroke="#0b1f4d" stroke-width="5" stroke-linejoin="round">
                 <path d="M20 30l12 40H8zM58 30l12 40H46zM96 30l12 40H84zM134 30l12 40h-24zM172 30l12 40h-24zM210 30l12 40h-24zM248 30l12 40h-24zM286 30l12 40h-24z"/>
               </g>
-              <circle cx="150" cy="190" r="56" fill="#fff" stroke="#0b1f4d" stroke-width="10"/>
-              <path d="M94 190h112M150 134c22 22 22 90 0 112M150 134c-22 22-22 90 0 112" fill="none" stroke="#1f5bff" stroke-width="7"/>
+              <circle cx="150" cy="190" r="60" fill="#fff" stroke="#0b1f4d" stroke-width="10"/>
+              <g fill="#e8323c" stroke="#0b1f4d" stroke-width="4">
+                <ellipse cx="150" cy="208" rx="26" ry="21"/>
+                <ellipse cx="117" cy="180" rx="10" ry="13" transform="rotate(-20 117 180)"/>
+                <ellipse cx="137" cy="164" rx="10" ry="13" transform="rotate(-6 137 164)"/>
+                <ellipse cx="163" cy="164" rx="10" ry="13" transform="rotate(6 163 164)"/>
+                <ellipse cx="183" cy="180" rx="10" ry="13" transform="rotate(20 183 180)"/>
+              </g>
             </svg></div>
         </div>
         <svg class="gate-frame" viewBox="0 0 1000 700" aria-hidden="true">
@@ -93,8 +106,14 @@
           <g stroke="#0b1f4d" stroke-width="4" opacity=".35">
             <path d="M20 260H140M20 370H140M20 480H140M20 590H140M80 150V260M50 260V370M110 370V480M80 480V590M860 260H980M860 370H980M860 480H980M860 590H980M920 150V260M890 260V370M950 370V480M920 480V590"/>
           </g>
+          <g class="gate-plaque">
+            <rect x="34" y="300" width="92" height="150" rx="6" fill="#1f5bff" stroke="#0b1f4d" stroke-width="6"/>
+            <rect x="874" y="300" width="92" height="150" rx="6" fill="#1f5bff" stroke="#0b1f4d" stroke-width="6"/>
+            <text x="80" y="362" text-anchor="middle">Home</text><text x="80" y="398" text-anchor="middle">of the</text>
+            <text x="920" y="372" text-anchor="middle">Bull-</text><text x="920" y="408" text-anchor="middle">dogs</text>
+          </g>
           <path id="arch-text" d="M190 205Q500 85 810 205" fill="none"/>
-          <text class="gate-sign"><textPath href="#arch-text" startOffset="50%" text-anchor="middle">Welcome to ARCMUN</textPath></text>
+          <text class="gate-sign"><textPath href="#arch-text" startOffset="50%" text-anchor="middle">Folsom High welcomes you</textPath></text>
         </svg>
       </div>
       <div class="intro-clouds" aria-hidden="true">
@@ -123,6 +142,7 @@
           <div><dt>Local time</dt><dd id="hud-time">—</dd></div>
           <div><dt>Gavel drops in</dt><dd id="hud-countdown">—</dd></div>
         </dl>
+        <button id="hud-preview" class="hud-preview" type="button" aria-pressed="false">Preview conference day</button>
       </aside>
       <p class="scroll-hint" aria-hidden="true">Scroll to fly in</p>
       </div>
@@ -144,6 +164,32 @@
         <div><dt>High school</dt><dd>Committees and topics to be announced</dd></div>
         <div><dt>Middle school</dt><dd>Committees and topics to be announced</dd></div>
       </dl>
+      <figure class="world-map">
+        <div class="map-frame">
+          <span class="map-pin is-home" style="--x: 16.35%; --y: 28.52%"><b>ARCMUN</b></span>
+          <span class="map-pin" style="--x: 51.7%; --y: 24.33%"><b>Committee 1</b></span>
+          <span class="map-pin" style="--x: 29.44%; --y: 27.39%"><b>Committee 2</b></span>
+          <span class="map-pin" style="--x: 60.22%; --y: 50.72%"><b>Committee 3</b></span>
+          <span class="map-pin" style="--x: 77.92%; --y: 42.39%"><b>Committee 4</b></span>
+          <span class="map-pin is-found" style="--x: 35.83%; --y: 57.78%"><b>Brazil</b></span>
+        </div>
+        <figcaption>Each committee will be pinned to the part of the world its topic is about. Pins shown are examples.</figcaption>
+      </figure>
+      <div class="lookup">
+        <h3>Find your country</h3>
+        <p>Once assignments go out, type your country to see your committee.</p>
+        <div class="lookup-row">
+          <label class="sr-only" for="country-search">Country</label>
+          <input id="country-search" type="search" value="Brazil" autocomplete="off">
+          <span class="btn btn-primary">Find</span>
+        </div>
+        <dl class="facts lookup-result">
+          <div><dt>Country</dt><dd>Brazil</dd></div>
+          <div><dt>Committee</dt><dd>Shows here after assignments</dd></div>
+          <div><dt>Division</dt><dd>High school</dd></div>
+        </dl>
+        <p class="demo-note">Example result. The search goes live when country assignments are published.</p>
+      </div>
     </section>
 
     <section id="schedule" class="section blue">
@@ -183,13 +229,29 @@
       <p class="register-cta"><span class="btn btn-primary is-disabled" aria-disabled="true">Registration opens soon</span></p>
     </section>
 
+    <section id="advisors" class="section paper">
+      <h2>For teachers and advisors.</h2>
+      <p class="section-lede">Schools register their delegations. This is what you'll need to do once sign-up opens.</p>
+      <ol class="checklist">
+        <li><span class="check" aria-hidden="true"></span><strong>Register your school</strong><span class="when">Opens soon</span></li>
+        <li><span class="check" aria-hidden="true"></span><strong>Tell us how many delegates you're bringing</strong><span class="when">Opens soon</span></li>
+        <li><span class="check" aria-hidden="true"></span><strong>Send country preferences</strong><span class="when">Opens soon</span></li>
+        <li><span class="check" aria-hidden="true"></span><strong>Pay delegation fees</strong><span class="when">Opens soon</span></li>
+        <li><span class="check" aria-hidden="true"></span><strong>Collect permission slips</strong><span class="when">Opens soon</span></li>
+      </ol>
+      <p class="register-cta"><span class="btn btn-primary is-disabled" aria-disabled="true">Advisor sign-up opens soon</span></p>
+    </section>
+
     <footer class="footer">
       <div>
         <p class="footer-mark">ARCMUN</p>
         <p>A Model United Nations conference hosted by Folsom High School on March 21, 2027.</p>
         <p class="credits">Globe imagery by <a href="https://www.solarsystemscope.com/textures/" rel="noopener">Solar System Scope</a> (CC BY 4.0), based on NASA data. Rendered with <a href="https://threejs.org" rel="noopener">three.js</a>.</p>
       </div>
-      <a class="preview-switch" href="formal.html">See the formal version</a>
+      <nav class="footer-links" aria-label="More pages">
+        <a href="guide.html">Delegate guide</a>
+        <a href="awards.html">Awards and gallery</a>
+      </nav>
     </footer>
   </main>
 
