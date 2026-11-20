@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Model Earth</title>
+  <meta name="description" content="A real-time, physically based model of Earth — lit by the Sun's true position right now, wrapped in a ray-marched atmosphere.">
+  <meta name="theme-color" content="#030508">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><radialGradient id='g' cx='35%' cy='35%'><stop offset='0' stop-color='%236fb6ff'/><stop offset='1' stop-color='%230a2a55'/></radialGradient></defs><circle cx='16' cy='16' r='14' fill='url(%23g)'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/textures/earth_day_4k.jpg" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.min.js",
+        "three/addons/": "./vendor/three/addons/"
+      }
+    }
+  </script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <div class="stage" aria-hidden="true">
+    <canvas id="globe"></canvas>
+    <div class="vignette"></div>
+  </div>
+
+  <div id="loader" class="loader" role="status">
+    <span class="loader-label">Acquiring signal</span>
+    <span class="loader-track"><span id="loader-bar" class="loader-bar"></span></span>
+  </div>
+
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="Model Earth home">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2 12h20M12 2c3 3.2 3 16.8 0 20M12 2c-3 3.2-3 16.8 0 20" fill="none" stroke="currentColor" stroke-width="1.1" opacity=".55"/></svg>
+      <span>Model Earth</span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#layers">Layers</a>
+      <a href="#light">Light</a>
+      <a href="#credits">Data</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>Live · rendered in your browser</p>
+        <h1 id="hero-title">Earth, exactly<br><em>as it is right now.</em></h1>
+        <p class="lede">A physically based model of our planet, lit by the Sun’s true position this second. Real satellite imagery, real city lights, and an atmosphere that scatters light the way air does.</p>
+        <div class="cta">
+          <button id="explore" class="btn btn-primary" type="button">
+            <span>Explore the globe</span>
+            <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <a class="btn btn-ghost" href="#layers">How it’s made</a>
+        </div>
+      </div>
+
+      <aside class="hud" aria-label="Live telemetry">
+        <dl>
+          <div><dt>Time</dt><dd id="hud-utc">--:--:-- UTC</dd></div>
+          <div><dt>Date</dt><dd id="hud-local">—</dd></div>
+          <div><dt>Subsolar point</dt><dd id="hud-subsolar">—</dd></div>
+          <div><dt>Viewing</dt><dd><span id="hud-view">—</span> <span class="tag" id="hud-day">—</span></dd></div>
+        </dl>
+      </aside>
+
+      <div class="console" role="group" aria-label="Globe controls">
+        <div class="console-row">
+          <label for="time-offset" class="console-label">Time <output id="time-offset-label">Live</output></label>
+          <div class="console-time">
+            <input id="time-offset" type="range" min="-12" max="12" step="0.25" value="0" aria-describedby="time-hint">
+            <button id="time-live" class="chip" type="button" title="Return to the present">Now</button>
+            <button id="timelapse" class="chip" type="button" aria-pressed="false">
+              <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M4 3v10l9-5z" fill="currentColor"/></svg><span>Timelapse</span>
+            </button>
+          </div>
+          <span id="time-hint" class="sr-only">Shift the simulated time up to twelve hours either way to move the day–night line.</span>
+        </div>
+        <div class="console-row layers" role="group" aria-label="Layers">
+          <button class="chip" type="button" data-layer="clouds" aria-pressed="true">Clouds</button>
+          <button class="chip" type="button" data-layer="lights" aria-pressed="true">City lights</button>
+          <button class="chip" type="button" data-layer="atmosphere" aria-pressed="true">Atmosphere</button>
+        </div>
+      </div>
+
+      <button id="explore-exit" class="exit" type="button">
+        <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Close explorer
+      </button>
+      <p class="explore-hint">Drag to orbit · scroll or pinch to zoom · Esc to exit</p>
+
+      <a class="scroll-cue" href="#layers" aria-label="Scroll to learn how it’s made"><span></span></a>
+    </section>
+
+    <section id="layers" class="section">
+      <div class="section-head">
+        <p class="eyebrow">01 — Layers</p>
+        <h2>A planet, not a picture.</h2>
+        <p class="section-lede">Nothing on the globe is painted. Every pixel is shaded at sixty frames a second from five layers of satellite-derived data, composited the way light composes them in orbit.</p>
+      </div>
+
+      <div class="stats">
+        <div><strong>8K</strong><span>surface and night-light imagery on capable displays</span></div>
+        <div><strong>±0.01°</strong><span>solar position from an astronomical ephemeris</span></div>
+        <div><strong>112</strong><span>atmosphere samples ray-marched for every pixel</span></div>
+      </div>
+
+      <ol class="cards">
+        <li class="card">
+          <span class="card-swatch swatch-day" aria-hidden="true"></span>
+          <h3>Surface</h3>
+          <p>Cloud-free true-colour mosaic of land and sea, derived from NASA’s Blue Marble programme. Oceans are deepened slightly where satellite haze flattened them.</p>
+        </li>
+        <li class="card">
+          <span class="card-swatch swatch-relief" aria-hidden="true"></span>
+          <h3>Relief &amp; water</h3>
+          <p>A normal map computed from global elevation shades mountains at low sun. A separate water mask gives oceans a glossy surface that throws a real sun glint.</p>
+        </li>
+        <li class="card">
+          <span class="card-swatch swatch-clouds" aria-hidden="true"></span>
+          <h3>Clouds</h3>
+          <p>A global cloud composite floats on its own shell twenty-nine kilometres up, drifting over the ground and casting offset shadows onto it.</p>
+        </li>
+        <li class="card">
+          <span class="card-swatch swatch-night" aria-hidden="true"></span>
+          <h3>City lights</h3>
+          <p>NASA’s night-time imagery fades in only after civil twilight, dimmed where clouds sit overhead, exactly where the Sun has set right now.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="light" class="section section-split">
+      <div class="section-head">
+        <p class="eyebrow">02 — Light</p>
+        <h2>Light, the way <em>air</em> bends it.</h2>
+      </div>
+      <div class="prose">
+        <p>The thin blue limb isn’t a glow effect. For each pixel the renderer traces a ray through a model atmosphere, sampling air density sixteen times and, at each step, marching another six samples toward the Sun.</p>
+        <dl class="defs">
+          <div>
+            <dt>Rayleigh scattering</dt>
+            <dd>Nitrogen and oxygen molecules scatter blue light about five times more than red, which tints the day-side haze and the edge of the planet.</dd>
+          </div>
+          <div>
+            <dt>Mie scattering</dt>
+            <dd>Larger aerosols scatter forward, so the rim flares bright when you orbit around to put the Sun behind the Earth.</dd>
+          </div>
+          <div>
+            <dt>The terminator</dt>
+            <dd>Sunlight grazing the day–night line crosses up to forty times more air. Blue is stripped out first, so the edge of day burns gold, then red.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <footer id="credits" class="footer">
+      <div>
+        <p class="eyebrow">Data &amp; credits</p>
+        <p>Surface, night-light and cloud textures by <a href="https://www.solarsystemscope.com/textures/" rel="noopener">Solar System Scope</a> (CC BY 4.0), based on NASA imagery. Relief and water data adapted from the <a href="https://github.com/mrdoob/three.js" rel="noopener">three.js</a> planet textures. Rendered with three.js (MIT).</p>
+      </div>
+      <p class="footer-mark">Model Earth</p>
+    </footer>
+  </main>
+</body>
+</html>
