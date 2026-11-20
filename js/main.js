@@ -29,6 +29,8 @@ renderer.toneMappingExposure = 0.62;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 const scene = new THREE.Scene();
+// Deep navy sky to match the site's blue / red / white palette.
+scene.background = new THREE.Color(0x0c2266);
 const camera = new THREE.PerspectiveCamera(32, 1, 0.01, 2000);
 
 const maxTex = renderer.capabilities.maxTextureSize;
@@ -136,7 +138,7 @@ scene.add(atmosphere);
 // Milky Way backdrop, kept dim: a sunlit Earth would wash most stars out of a real exposure.
 const stars = new THREE.Mesh(
   new THREE.SphereGeometry(900, 64, 32),
-  new THREE.MeshBasicMaterial({ map: textures.stars, side: THREE.BackSide, color: new THREE.Color(0.11, 0.11, 0.12), depthWrite: false })
+  new THREE.MeshBasicMaterial({ map: textures.stars, side: THREE.BackSide, color: new THREE.Color(0.11, 0.11, 0.12), depthWrite: false, blending: THREE.AdditiveBlending, transparent: true })
 );
 stars.rotation.set(-60 * DEG, 0, 23 * DEG);
 scene.add(stars);

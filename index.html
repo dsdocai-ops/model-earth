@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Model Earth</title>
   <meta name="description" content="A real-time, physically based model of Earth — lit by the Sun's true position right now, wrapped in a ray-marched atmosphere.">
-  <meta name="theme-color" content="#030508">
+  <meta name="theme-color" content="#0b1f4d">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><radialGradient id='g' cx='35%' cy='35%'><stop offset='0' stop-color='%236fb6ff'/><stop offset='1' stop-color='%230a2a55'/></radialGradient></defs><circle cx='16' cy='16' r='14' fill='url(%23g)'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="assets/textures/earth_day_4k.jpg" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
   <script type="importmap">
@@ -29,7 +29,7 @@
   </div>
 
   <div id="loader" class="loader" role="status">
-    <span class="loader-label">Acquiring signal</span>
+    <span class="loader-label">Loading planet…</span>
     <span class="loader-track"><span id="loader-bar" class="loader-bar"></span></span>
   </div>
 
@@ -48,8 +48,8 @@
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>Live · rendered in your browser</p>
-        <h1 id="hero-title">Earth, exactly<br><em>as it is right now.</em></h1>
+        <p class="eyebrow bubble"><span class="live-dot" aria-hidden="true"></span>Live! Rendered in your browser</p>
+        <h1 id="hero-title">Earth, exactly <em><span>as it is</span> <span>right now.</span></em></h1>
         <p class="lede">A physically based model of our planet, lit by the Sun’s true position this second. Real satellite imagery, real city lights, and an atmosphere that scatters light the way air does.</p>
         <div class="cta">
           <button id="explore" class="btn btn-primary" type="button">
@@ -59,6 +59,8 @@
           <a class="btn btn-ghost" href="#layers">How it’s made</a>
         </div>
       </div>
+
+      <div class="sticker" aria-hidden="true"><span>100%<br>real<br>data</span></div>
 
       <aside class="hud" aria-label="Live telemetry">
         <dl>
@@ -99,8 +101,8 @@
 
     <section id="layers" class="section">
       <div class="section-head">
-        <p class="eyebrow">01 — Layers</p>
-        <h2>A planet, not a picture.</h2>
+        <p class="eyebrow">The layers</p>
+        <h2>A planet, not a <mark>picture.</mark></h2>
         <p class="section-lede">Nothing on the globe is painted. Every pixel is shaded at sixty frames a second from five layers of satellite-derived data, composited the way light composes them in orbit.</p>
       </div>
 
@@ -136,8 +138,8 @@
 
     <section id="light" class="section section-split">
       <div class="section-head">
-        <p class="eyebrow">02 — Light</p>
-        <h2>Light, the way <em>air</em> bends it.</h2>
+        <p class="eyebrow">The light</p>
+        <h2>Light, the way <mark>air</mark> bends it.</h2>
       </div>
       <div class="prose">
         <p>The thin blue limb isn’t a glow effect. For each pixel the renderer traces a ray through a model atmosphere, sampling air density sixteen times and, at each step, marching another six samples toward the Sun.</p>

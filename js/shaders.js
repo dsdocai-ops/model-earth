@@ -122,6 +122,9 @@ export const earthFragment = /* glsl */ `
     // Earthshine / moonlight: keeps the night hemisphere a barely-there disc rather than a hole.
     color += albedo * vec3(0.6, 0.7, 1.0) * 0.0035 * (1.0 - smoothstep(-0.2, 0.1, muGeo));
 
+    // Night hemisphere picks up a faint navy cast so it reads against the site's navy sky.
+    color += vec3(0.0015, 0.005, 0.04) * (1.0 - smoothstep(-0.15, 0.08, muGeo));
+
     // City lights fade in after civil twilight and are dimmed by overlying cloud.
     vec3 lights = texture2D(uNight, vUv).rgb;
     lights = pow(lights, vec3(1.35)) * vec3(1.0, 0.86, 0.66);
